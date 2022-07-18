@@ -24,14 +24,7 @@ const schema = yup.object().shape({
 const PayOrder = () => {
   const {
     cart,
-    removeItem,
-    totalOrder,
-    totalUnits,
     orderId,
-    setCart,
-    setQtty,
-    setPrice,
-    getItem,
   } = React.useContext(ContextCard);
 
   const {
@@ -40,17 +33,18 @@ const PayOrder = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues:{
-      firstName: "Lenin",
-      lastName: "Uzcategui",
-      email: "leuzga@gmail.com",
-      numberPhone: "+569590872",
-      street: "San Juan",
-      nroStreet: "1234",
-      city: "Santiago",
-      country: "Chile",
-      zipCode: "8500000"
-  }   
+  // Onlu=y is used in case of develop time  
+  //   defaultValues:{
+  //     firstName: "Lenin",
+  //     lastName: "Uzcategui",
+  //     email: "leuzga@gmail.com",
+  //     numberPhone: "+569590872",
+  //     street: "San Juan",
+  //     nroStreet: "1234",
+  //     city: "Santiago",
+  //     country: "Chile",
+  //     zipCode: "8500000"
+  // }   
   });
 
   const db = getFirestore();

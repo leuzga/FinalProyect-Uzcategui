@@ -41,7 +41,6 @@ export default function CardView() {
     setQtty,
     setPrice,
     getItem,
-    ipClient,
   } = React.useContext(ContextCard);
 
   const [open, setOpen] = React.useState(false);

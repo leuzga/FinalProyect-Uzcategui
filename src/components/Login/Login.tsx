@@ -18,8 +18,6 @@ const theme = createTheme();
 
 export default function Login() {
 
-  const [isSigning, setIsSigning] = React.useState(false);
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

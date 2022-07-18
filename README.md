@@ -7,7 +7,7 @@ Implementacion base de un carrito de compras utilizando como persistencia la bas
 
 se implementan servicios CRUD para las ordenes de los usuarios, se implementa Auth de firebase
 autenticacion de usuarios, mediane e API de firebase, el login es posible creando un registro del tipo email contraseña y usando el provider de google.
-
+El código está escrito en typescript...
 se utiliza una libreria para validar los diferentes formularios que aparecen en la aplicacion, a saber, el de las ordenes de pago-pedidos y el de registrar al usuario.
 
 # Final Project English...
