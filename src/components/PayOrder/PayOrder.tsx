@@ -32,19 +32,7 @@ const PayOrder = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
-  // Onlu=y is used in case of develop time  
-  //   defaultValues:{
-  //     firstName: "Lenin",
-  //     lastName: "Uzcategui",
-  //     email: "leuzga@gmail.com",
-  //     numberPhone: "+569590872",
-  //     street: "San Juan",
-  //     nroStreet: "1234",
-  //     city: "Santiago",
-  //     country: "Chile",
-  //     zipCode: "8500000"
-  // }   
+    resolver: yupResolver(schema),  
   });
 
   const db = getFirestore();
