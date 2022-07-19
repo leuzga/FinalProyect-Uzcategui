@@ -14,7 +14,6 @@ import Login from './components/Login/Login';
 import Register from "./components/Register/Register";
 import Reset from "./components/Reset/Reset";
 import { userId } from './components/services/FirebaseConfig';
-import HistoryOrders from './components/HistoryOrders/HistoryOrders';
 
 function App() {
   

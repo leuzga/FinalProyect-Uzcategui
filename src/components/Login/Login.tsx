@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-escape */
 
 import * as React from 'react';
+import * as yup from 'yup'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,7 +18,6 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import {ErrorMessage} from '@hookform/error-message';
 import { Link as LinkRoute, useNavigate } from "react-router-dom";
 import { auth, logInWithEmailAndPassword, signInWithGoogle } from "../services/FirebaseConfig";
