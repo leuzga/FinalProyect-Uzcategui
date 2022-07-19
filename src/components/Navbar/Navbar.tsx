@@ -26,13 +26,6 @@ export interface IqttyProduct {
   quantityProduct: number;
 }
 const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
-  
-  // let user, name = '';
-
-  // if( localStorage.length > 0 && user ) {
-  //   user = JSON.parse(window.localStorage.getItem('user')!);
-  //   name = user.userName.split(' ',1)[0];
-  // }
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -58,9 +51,6 @@ const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
       logout();
       navigate("/");
     }
-    // if(optItem.setting === 'History Orders'){
-    //   navigate("/History");
-    // }
     setAnchorElUser(null);
   };
 
@@ -177,7 +167,6 @@ const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
                     lineHeight: "3",
                   }}
                 >
-                  {/* { userId !== '' ? name === '' ? 'Login' : 'Hola '.concat(name) : 'Login'} */}
                   { userId !== '' ? 'Hola' : 'Login'}
                 </Typography>
               </Typography>
