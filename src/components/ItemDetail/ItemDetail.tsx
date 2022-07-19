@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { ContextCard } from '../../Context/CardContext';
 import ItemCount from "../ItemCount/ItemCount";
-import Fade from '@mui/material/Fade';
 
 const ItemDetail: React.FC<any> = ({ itemProduct }): JSX.Element => {
 
@@ -24,7 +23,6 @@ const ItemDetail: React.FC<any> = ({ itemProduct }): JSX.Element => {
 
   return (
     <>
-    <Fade in timeout={1000}>
       <Box sx={{ width: "100%", maxWidth: "98%", display: "flex", justifyContent: "center" }}>
         <Card
           sx={{ maxWidth: 500, objectFit: "contain", border: "none", backgroundColor: "transparent"  }}
@@ -64,7 +62,6 @@ const ItemDetail: React.FC<any> = ({ itemProduct }): JSX.Element => {
           </Paper>
         </Card>
       </Box>
-      </Fade>
     </>
   );
 };

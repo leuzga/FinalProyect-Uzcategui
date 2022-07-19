@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { useNavigate } from "react-router-dom";
 import { Paper, Typography, Button, Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
@@ -7,7 +8,8 @@ import PublishIcon from "@mui/icons-material/Publish";
 import { blue } from "@mui/material/colors";
 import { ContextCard } from "../../Context/CardContext";
 import * as React from 'react';
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
+import { db, userId } from '../services/FirebaseConfig';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -19,11 +21,19 @@ const schema = yup.object().shape({
   numberPhone: yup.string().matches(phoneRegExp, 'Phone number is not valid'),
   firstName: yup.string().min(3, 'Must be min 3 characters'),
   lastName: yup.string().min(3, 'Must be min 3 characters'),
+  street: yup.string().required(),
+  city: yup.string().required(),
+  country: yup.string().required(),
+  zipCode: yup.string().required(),
+
 });
 
 const PayOrder = () => {
+
   const {
     cart,
+    setCart,
+    setOrderId,
     orderId,
   } = React.useContext(ContextCard);
 
@@ -32,20 +42,29 @@ const PayOrder = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),  
+    resolver: yupResolver(schema),   
   });
 
-  const db = getFirestore();
+  const isError = (nameField: string): boolean => Object.keys(errors)?.some(arrVal => nameField === arrVal);
+  const navigate = useNavigate();
   
+
   const onSubmit = async (data: any) => {
-    const newOrder =  {...cart, order: { orderId,...data}}
-    alert(JSON.stringify(newOrder,null,2));
-    await setDoc(doc(db, 'Orders_FS', orderId), newOrder)
+    const newOrder =  {...cart, userId: userId, order: { orderId,...data}}
+    // alert(JSON.stringify(newOrder,null,2));
+    await setDoc(doc(db, 'Orders_FS', userId), newOrder).then(function() {
+      alert(`Orden Nro: ${orderId} creada con exito`)
+      let newArray = [] as any;
+      setCart(newArray);
+      setOrderId('');
+      navigate("/");
+    });
+    
   };
 
   const titleOrder = "Please provide the data to process your order number: ";
   const infoUser = "Type the User data";
-  const infoShipping = "Type the data for courier shipment";
+  const infoShipping = "Type the data for courier shipment"; 
 
   return (
     <Grid
@@ -58,6 +77,7 @@ const PayOrder = () => {
       >
     <Box
       component="form"
+      noValidate
       onSubmit={handleSubmit(onSubmit)}
       sx={{
         display: "flex",
@@ -69,7 +89,6 @@ const PayOrder = () => {
           minHeight: "70vh",
         },
       }}
-      noValidate
       autoComplete="off"
     >
       <Paper
@@ -96,13 +115,16 @@ const PayOrder = () => {
               size="small"
               sx={{ width: "80%" }}
               id="nombre"
+              error={isError("firstName")}
               {...register("firstName", { required: "This is required." })}
               placeholder="First Name"
               label="Name"
               variant="outlined"
             />
             <Typography component="div" sx={{ color: "red" }}>
+              <>
               <ErrorMessage errors={errors} name="firstName" />
+              </>
             </Typography>
           </Box>
           <Box sx={{ p: 2 }}>
@@ -111,6 +133,7 @@ const PayOrder = () => {
               size="small"
               sx={{ width: "80%" }}
               id="apellido"
+              error={isError("lastName")}
               {...register("lastName", { required: "This is required." })}
               placeholder="Last Name"
               label="Last Name"
@@ -125,6 +148,7 @@ const PayOrder = () => {
               size="small"
               sx={{ width: "80%" }}
               id="email"
+              error={isError("email")}
               {...register("email", { required: "This is required." })}
               placeholder="Type valid email e.g.: nombre@dominio.com"
               label="E-mail"
@@ -139,6 +163,7 @@ const PayOrder = () => {
               size="small"
               sx={{ width: "80%" }}
               id="NroTlf"
+              error={isError("numberPhone")}
               {...register("numberPhone", { required: "This is required." })}
               placeholder="Type valid number phone e.g. +56123456789"
               label="Number Phone"
@@ -156,6 +181,7 @@ const PayOrder = () => {
               size="small"
               sx={{ width: "80%" }}
               id="street"
+              error={isError("street")}
               {...register("street", { required: "This is required." })}
               placeholder="Type your street or avenue"
               label="Street/Avenue"
@@ -171,6 +197,7 @@ const PayOrder = () => {
               type="number"
               sx={{ width: "80%" }}
               id="numero"
+              error={isError("nroStreet")}
               {...register("nroStreet", { required: "This is required." })}
               placeholder="Type number of street: 000"
               label="Number Street"
@@ -185,6 +212,7 @@ const PayOrder = () => {
               size="small"
               sx={{ width: "80%" }}
               id="ciudad"
+              error={isError("city")}
               {...register("city", { required: "This is required." })}
               placeholder="Type your city"
               label="City"
@@ -199,6 +227,7 @@ const PayOrder = () => {
               size="small"
               sx={{ width: "80%" }}
               id="pais"
+              error={isError("country")}
               {...register("country", { required: "This is required." })}
               placeholder="Type your country"
               label="Country"
@@ -213,6 +242,7 @@ const PayOrder = () => {
               size="small"
               sx={{ width: "80%" }}
               id="zipCode"
+              error={isError("zipCode")}
               {...register("zipCode", { required: "This is required." })}
               placeholder="Type your zip code"
               label="Zip Code"
@@ -246,7 +276,7 @@ const PayOrder = () => {
       </Paper>
     </Box>
     </Grid>
-  );
+  )
 };
 
 export default PayOrder;

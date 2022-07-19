@@ -23,7 +23,8 @@ import { ICartItem } from "./../../Context/CardContext";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Box from "@mui/material/Box";
-import { Link, useNavigate  } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
+import { userId } from '../services/FirebaseConfig';
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -81,8 +82,8 @@ export default function CardView() {
 
   const handlerCleanCart = () => {
     let newArray = [] as any;
-    setCart(newArray)
-  }
+    setCart(newArray);
+  };
 
   const navigate = useNavigate();
 
@@ -130,7 +131,6 @@ export default function CardView() {
                 return (
                   <>
                     <ListItem
-                      key={item.id}
                       sx={{
                         display: "flex",
                         alignItems: "start",
@@ -209,19 +209,19 @@ export default function CardView() {
                               </ListItemButton>
                             </Avatar>
 
-                          <IconButton
-                            edge="end"
-                            aria-label="delete"
-                            sx={{ ml: 1, mr: 1, p: 0, pl: 1, pr: 1, }}
-                            onClick={(e) => handlerDelete(e, index)}
-                          >
-                            <DeleteOutlineIcon
-                              sx={{
-                                color: red[400],
-                              }}
-                              fontSize="medium"
-                            />
-                          </IconButton>
+                            <IconButton
+                              edge="end"
+                              aria-label="delete"
+                              sx={{ ml: 1, mr: 1, p: 0, pl: 1, pr: 1 }}
+                              onClick={(e) => handlerDelete(e, index)}
+                            >
+                              <DeleteOutlineIcon
+                                sx={{
+                                  color: red[400],
+                                }}
+                                fontSize="medium"
+                              />
+                            </IconButton>
                           </Stack>
                         </Box>
                       }
@@ -243,58 +243,59 @@ export default function CardView() {
                           }}
                           sx={{ width: "96%" }}
                         >
-                                                    <Stack
+                          <Stack
                             direction={{ xs: "column", sm: "row" }}
                             spacing={0}
                           >
-                          <ListItemAvatar sx={{ padding: "1rem" }}>
-                            <Avatar
-                              sx={{
-                                width: 80,
-                                height: 80,
-                                bgcolor: grey["A200"],
-                              }}
-                            >
-                              <Image
-                                src={item.image}
-                                fit="contain"
-                                duration={3000}
-                                easing="cubic-bezier(0.7, 0, 0.6, 1)"
-                                width={80}
-                              />
-                            </Avatar>
-                          </ListItemAvatar>
-                          <ListItemText
-                            sx={{ paddingRight: "2rem" }}
-                            primary={item.title}
-                            secondary={
-                              <>
-                                <strong>
-                                  <br />
-                                  Cantidad: ${item.quantity}
-                                  &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Precio
-                                  Unitario: $ ${item.price}
-                                </strong>
-                                <Typography
-                                  variant="button"
-                                  display="flex"
-                                  sx={{
-                                    justifyContent: "flex-start",
-                                    pr: 6,
-                                    marginTop: "0.1rem",
-                                  }}
-                                  gutterBottom
-                                >
-                                  <>
-                                    <strong>
-                                      Precio por cantidad: $ ${item.pricexqtty}
-                                    </strong>
-                                  </>
-                                </Typography>
-                              </>
-                            }
-                          />
-</Stack>
+                            <ListItemAvatar sx={{ padding: "1rem" }}>
+                              <Avatar
+                                sx={{
+                                  width: 80,
+                                  height: 80,
+                                  bgcolor: grey["A200"],
+                                }}
+                              >
+                                <Image
+                                  src={item.image}
+                                  fit="contain"
+                                  duration={3000}
+                                  easing="cubic-bezier(0.7, 0, 0.6, 1)"
+                                  width={80}
+                                />
+                              </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                              sx={{ paddingRight: "2rem" }}
+                              primary={item.title}
+                              secondary={
+                                <>
+                                  <strong>
+                                    <br />
+                                    Cantidad: ${item.quantity}
+                                    &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Precio
+                                    Unitario: $ ${item.price}
+                                  </strong>
+                                  <Typography
+                                    variant="button"
+                                    display="flex"
+                                    sx={{
+                                      justifyContent: "flex-start",
+                                      pr: 6,
+                                      marginTop: "0.1rem",
+                                    }}
+                                    gutterBottom
+                                  >
+                                    <>
+                                      <strong>
+                                        Precio por cantidad: $ $
+                                        {item.pricexqtty}
+                                      </strong>
+                                    </>
+                                  </Typography>
+                                </>
+                              }
+                            />
+                          </Stack>
                           {open ? <ExpandLess /> : <ExpandMore />}
                         </ListItemButton>
                         <Collapse
@@ -332,24 +333,31 @@ export default function CardView() {
               </Typography>
             </List>
             <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              "& > *": {
-                m: 1,
-                pb: 2,
-              },
-            }}
-          >
-            <ButtonGroup variant="outlined" aria-label="outlined button group">
-              <Button disabled={totalUnits=== 0} onClick={() => handlerCleanCart()}>Limpiar Carrito</Button>
-              <Button onClick={() => navigate(-1)}>Seguir Comprando</Button>
-              <Link to={"/PayOrder"}><Button disabled={totalUnits=== 0}>Ir a Pagar</Button></Link>
-            </ButtonGroup>
-          </Box>
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                "& > *": {
+                  m: 1,
+                  pb: 2,
+                },
+              }}
+            >
+              <ButtonGroup
+                variant="outlined"
+                aria-label="outlined button group"
+              >
+                <Button
+                  disabled={totalUnits === 0}
+                  onClick={() => handlerCleanCart()}
+                >
+                  Limpiar Carrito
+                </Button>
+                <Button onClick={() => navigate(-1)}>Seguir Comprando</Button>
+                <Button disabled={totalUnits === 0}><Link to={(userId!=='') ? "/PayOrder" : "/Login"}>Ir a Pagar</Link></Button>
+              </ButtonGroup>
+            </Box>
           </Demo>
-
         </Grid>
       </Grid>
     </Box>

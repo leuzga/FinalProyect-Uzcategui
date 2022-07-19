@@ -24,6 +24,7 @@ const CardContext: React.FC<any> = ({ children }): JSX.Element => {
   const [cart, setCart] = React.useState<ICartItem[]>([]);
   const [totalOrder, setTotalOrder] = React.useState<number>(0);
   const [totalUnits, setTotalUnits] = React.useState<number>(0);
+  const [user, setUser] = React.useState();
 
   const nanoid = customAlphabet('1234567890', 10)
 
@@ -33,7 +34,6 @@ const CardContext: React.FC<any> = ({ children }): JSX.Element => {
     };
   })
 
-
   const isEmpty = (val: any) =>
     val == null || !(Object.keys(val) || val).length;
   const isInCart = (val: any, id: number) =>
@@ -42,7 +42,11 @@ const CardContext: React.FC<any> = ({ children }): JSX.Element => {
     val.filter((item: { id: number }) => item.id !== id);
   const getItem = (val: any, id: number) =>
     val.find((item: { id: number }) => item.id === id);  
-  const clearItems = (val: any) => (val.lenght = 0);
+  const clearItems = (val: any) => {
+    (val.lenght = 0)
+    localStorage.clear();
+    // localStorage.removeItem('itemsCart');
+  };
   const totalPrice = (val: any) => val.reduce((_total: number, item: { pricexqtty: number; }) => item.pricexqtty + _total, 0);
   const totalQtty = (val: any) =>
     val.reduce((_total: number, item: { quantity: number }) => item.quantity + _total, 0);
@@ -67,11 +71,14 @@ const CardContext: React.FC<any> = ({ children }): JSX.Element => {
     const addItem = (item: ICartItem) => {
       if(isEmpty(cart)) {
         setCart([...cart, item]);
+        localStorage.setItem('itemsCart', JSON.stringify([...cart, item]));
       } else if (!isInCart(cart, item.id)) {
         setCart([...cart, item]);
+        localStorage.setItem('itemsCart', JSON.stringify([...cart, item]));
       } else if (isInCart(cart, item.id)) {
         let newArray = [...cart];
         setCart(newArray)
+        localStorage.setItem('itemsCart', JSON.stringify(newArray));
       }
     }
 
@@ -94,6 +101,7 @@ const CardContext: React.FC<any> = ({ children }): JSX.Element => {
         setProductObj: setProductObj,
         addItem: addItem,
         removeItem: removeItem,
+        setOrderId: setOrderId,
         totalOrder: totalOrder,
         clearItems:clearItems,
         totalUnits: totalUnits,
@@ -103,6 +111,8 @@ const CardContext: React.FC<any> = ({ children }): JSX.Element => {
         cart: cart,
         setCart: setCart,
         isEmpty: isEmpty,
+        user: user,
+        setUser: setUser,
       }}
     >
       {children}

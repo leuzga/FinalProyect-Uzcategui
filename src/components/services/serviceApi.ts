@@ -6,6 +6,7 @@ const options = {
   }
 }
 async function serviceApi () {
+  console.log("SERVICE API GET")
   return await fetch(url, options).then(resp => resp.json())
 }
 

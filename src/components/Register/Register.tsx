@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-escape */
-
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -12,7 +11,6 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import GoogleIcon from '@mui/icons-material/Google';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from "react-hook-form";
@@ -20,19 +18,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {ErrorMessage} from '@hookform/error-message';
 import { Link as LinkRoute, useNavigate } from "react-router-dom";
-import { auth, logInWithEmailAndPassword, signInWithGoogle } from "../services/FirebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, registerWithEmailAndPassword } from "../services/FirebaseConfig";
+
 
 const theme = createTheme();
 
 const schema = yup.object().shape({
+  userName: yup.string().required().min(3),
   email: yup.string().email().required(),
   password: yup.string().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
     "Must Contain 8 Characters, \nOne Uppercase, \nOne Lowercase, \nOne Number and \nOne Special Case Character"
   ),
 });
 
-export default function Login() {
+export default function Register() {
     const {
       register,
       handleSubmit,
@@ -42,6 +42,9 @@ export default function Login() {
     });
 
     const isError = (nameField: string): boolean => Object.keys(errors)?.some(arrVal => nameField === arrVal)
+
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
     const [user, loading] = useAuthState(auth);
     const navigate = useNavigate();
 
@@ -49,14 +52,14 @@ export default function Login() {
       if (loading) {
         return;
       }
-      if (user) {
-        navigate('/PayOrder')
-        
-      }
+      if (user) navigate("/PayOrder");
     }, [user, loading, navigate]);
 
     const onSubmit = async (data: any) => {
-      logInWithEmailAndPassword(data.email.trim(), data.password.trim());
+      setEmail(data.email.trim());
+      setPassword(data.password.trim());
+      if (!data.userName) alert("Please enter name");
+      registerWithEmailAndPassword(data.userName, email.trim(), password);
     };
 
     return (
@@ -92,9 +95,24 @@ export default function Login() {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Login your account
+                Get your account
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
+              <TextField
+                  margin="normal"
+                  fullWidth
+                  id="userName"
+                  label="Name"
+                  error={isError("userName")}
+                  {...register("userName", { required: "This is required." })}
+                  placeholder="Type name"
+                  variant="outlined"
+                />
+                <Typography component="div" sx={{ color: "red", textAlign: "left" }}>
+                  <>
+                  <ErrorMessage errors={errors} name="userName" />
+                  </>
+                </Typography>
                 <TextField
                   margin="normal"
                   fullWidth
@@ -131,18 +149,9 @@ export default function Login() {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 0.6 }}
+                  sx={{ mt: 3, mb: 2 }}
                 >
-                  Sing In
-                </Button>
-                <Button
-                  type="button"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 0, mb: 2 }}
-                  onClick={signInWithGoogle}
-                >
-                  <GoogleIcon sx={{pr: 1, fontSize: "24px"}} /> Login with Google
+                  Registrar
                 </Button>
                 <Grid container sx={{ display: "flex", flexDirection: "row", alignItems: "center", width: "75%", whiteSpace: "pre-line" }}>
                   <Grid item xs>
@@ -152,7 +161,7 @@ export default function Login() {
                   </Grid>
                   <Grid item sx={{ textAlign: "Left" }}>
                     <Link href="#" variant="body2">
-                      Don't have an account? <LinkRoute to="/register">Register</LinkRoute> now.
+                      Already have an account? <LinkRoute to="/Login">Login</LinkRoute> now.
                     </Link>
                   </Grid>
                 </Grid>

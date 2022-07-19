@@ -13,17 +13,27 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { grey } from "@mui/material/colors";
 import CartWidget from "./../CartWidget/CartWidget";
-import { Link } from "react-router-dom";
+import {Link as LinkRoute, useNavigate} from 'react-router-dom';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import blueGrey from '@mui/material/colors/blueGrey';
+import { logout, userId } from "../../components/services/FirebaseConfig";
+import Link from "@mui/material/Link";
+
 
 const pages = ["Home", "Men", "Women", "Jewelery", "Electronics", "About"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
+const settings = [ "Logout"]; // add "History Orders" options
 export interface IqttyProduct {
   quantityProduct: number;
 }
 const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
+  
+  let user, name = '';
+
+  if( localStorage.length > 0 ) {
+    user = JSON.parse(window.localStorage.getItem('user')!);
+    name = user.userName.split(' ',1)[0];
+  }
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -41,8 +51,16 @@ const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  const navigate = useNavigate();
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (evt: React.MouseEvent<HTMLAnchorElement, MouseEvent> | React.MouseEvent<HTMLSpanElement, MouseEvent>, optItem: any) => {
+    if(optItem.setting === 'Logout'){
+      logout();
+      navigate("/");
+    }
+    // if(optItem.setting === 'History Orders'){
+    //   navigate("/History");
+    // }
     setAnchorElUser(null);
   };
 
@@ -53,9 +71,9 @@ const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link to={"/"} replace style={{ textDecoration: 'none' }}>
+          <LinkRoute to={"/"} replace style={{ textDecoration: "none" }}>
             <Avatar src="/img/logoTiendita.png" alt="Logo tiendita" />
-          </Link>
+          </LinkRoute>
           <Typography
             variant="h5"
             noWrap
@@ -104,9 +122,9 @@ const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
               {pages.map((page) => (
                 <MenuItem key={page}>
                   <Typography textAlign="center">
-                    <Link to={page} replace style={{ textDecoration: 'none' }}>
+                    <LinkRoute to={page} replace style={{ textDecoration: "none" }}>
                       {page}
-                    </Link>
+                    </LinkRoute>
                   </Typography>
                 </MenuItem>
               ))}
@@ -121,24 +139,48 @@ const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
           >
             {pages.map((page) => (
               <Typography textAlign="center" key={page}>
-                <Link to={page} replace style={{ textDecoration: 'none' }}>
+                <LinkRoute to={page} replace style={{ textDecoration: "none" }}>
                   <Button
-                    key={page}
                     sx={{ my: 2, color: "white", display: "block" }}
                   >
                     {page}
                   </Button>
-                </Link>
+                </LinkRoute>
               </Typography>
             ))}
           </Box>
-          <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center", alignContent: "center", height: "100%"  }} >
-          <Link to={"/Login"} style={{ textDecoration: 'none'}}>
-            <Typography noWrap component="span">
-              <AccountCircleOutlinedIcon  sx={{fontSize: 32, color: blueGrey[50], mt: "6px", mr: "6px" }}/> 
-              <Typography component="span" sx={{ color: blueGrey[50], mr: "8px", verticalAlign: "top", lineHeight: "3"}} >Login</Typography>
-            </Typography>
-          </Link>
+          <Box
+            sx={{
+              flexGrow: 0,
+              display: "flex",
+              alignItems: "center",
+              alignContent: "center",
+              height: "100%",
+            }}
+          >
+            <LinkRoute to={"/Login"} style={{ textDecoration: "none" }}>
+              <Typography noWrap component="span">
+                <AccountCircleOutlinedIcon
+                  sx={{
+                    fontSize: 32,
+                    color: blueGrey[50],
+                    mt: "6px",
+                    mr: "6px",
+                  }}
+                />
+                <Typography
+                  component="span"
+                  sx={{
+                    color: blueGrey[50],
+                    mr: "8px",
+                    verticalAlign: "top",
+                    lineHeight: "3",
+                  }}
+                >
+                  { userId !== '' ? name === '' ? 'Login' : 'Hola '.concat(name) : 'Login'}
+                </Typography>
+              </Typography>
+            </LinkRoute>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -163,8 +205,14 @@ const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting} >
+                  <Typography textAlign="center">
+                    <Link  sx={{ textDecoration: "none", fontSize: "14px"}} component="button"
+                      onClick={(evt) => handleCloseUserMenu(evt,{setting})}
+                    >
+                      {setting}
+                    </Link>
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>

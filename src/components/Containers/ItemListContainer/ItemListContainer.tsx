@@ -10,6 +10,7 @@ const ItemListContainer: React.FC<{
   category: string;
 }> = ({ mensaje, objProducts, category }) => {
   const [dataJson, setDataJson]: any = React.useState<any[]>([]);
+  
   React.useEffect(() => {
     setDataJson(objProducts);
   }, [objProducts]);
@@ -45,9 +46,11 @@ const ItemListContainer: React.FC<{
         </Box>
       )}
       <br />
+      { dataJson &&
       <Box sx={{ width: "100%", maxWidth: "98%", justifyContent: "center" }}>
         <ItemList dataJson={dataJson} />
       </Box>
+      }
       <br />
     </>
   );
