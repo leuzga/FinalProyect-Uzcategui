@@ -4,7 +4,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -17,7 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {ErrorMessage} from '@hookform/error-message';
 import { Link as LinkRoute, useNavigate } from "react-router-dom";
-import { auth, logInWithEmailAndPassword, sendPasswordReset,  } from "../services/FirebaseConfig";
+import { auth, sendPasswordReset,  } from "../services/FirebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 
