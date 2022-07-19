@@ -27,12 +27,12 @@ export interface IqttyProduct {
 }
 const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
   
-  let user, name = '';
+  // let user, name = '';
 
-  if( localStorage.length > 0 && user ) {
-    user = JSON.parse(window.localStorage.getItem('user')!);
-    name = user.userName.split(' ',1)[0];
-  }
+  // if( localStorage.length > 0 && user ) {
+  //   user = JSON.parse(window.localStorage.getItem('user')!);
+  //   name = user.userName.split(' ',1)[0];
+  // }
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -177,7 +177,8 @@ const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
                     lineHeight: "3",
                   }}
                 >
-                  { userId !== '' ? name === '' ? 'Login' : 'Hola '.concat(name) : 'Login'}
+                  {/* { userId !== '' ? name === '' ? 'Login' : 'Hola '.concat(name) : 'Login'} */}
+                  { userId !== '' ? 'Hola' : 'Login'}
                 </Typography>
               </Typography>
             </LinkRoute>

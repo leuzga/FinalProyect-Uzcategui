@@ -2,6 +2,7 @@
   "name": "finalproject-uzcategui",
   "version": "0.1.0",
   "private": true,
+  "homepage": "leuzga.github.io/FinalProyect-Uzcategui/",
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
@@ -37,7 +38,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy" : "gh-pages -d build -r https://$DEPLY_GH@github.com/leuzga/FinalProyect-Uzcategui"
   },
   "eslintConfig": {
     "extends": [
@@ -68,6 +71,7 @@
   "devDependencies": {
     "@types/mui-image": "^1.0.0",
     "@types/styled-components": "^5.1.25",
+    "gh-pages": "^4.0.0",
     "husky": "^4.3.8",
     "lint-staged": "^10.5.4",
     "typescript": "^4.7.2"
