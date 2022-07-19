@@ -29,12 +29,9 @@ const NavBar: React.FC<IqttyProduct> = ({ quantityProduct }) => {
   
   let user, name = '';
 
-  if( localStorage.length > 0 ) {
+  if( localStorage.length > 0 && user ) {
     user = JSON.parse(window.localStorage.getItem('user')!);
     name = user.userName.split(' ',1)[0];
-  }else {
-    user = 'Invitado';
-    name = 'Invitado';
   }
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
