@@ -25,3 +25,4 @@ jobs:
         run: npm run deploy
         env: 
             DEPLY_GH: {{ secrets.DEPLY_GH }}
+            

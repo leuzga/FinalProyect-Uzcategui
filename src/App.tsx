@@ -45,7 +45,6 @@ function App() {
           <Route path='/PayOrder' element={(userId !== "" && !isEmpty(cart)) ? <PayOrder /> : <Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/Register' element={<Register />} />
-          {/* <Route path='/History' element={<HistoryOrders />} /> */}
           <Route path='/Reset' element={<Reset />} />
           <Route path='/Error' element={<Error404 /> } /> 
           <Route path='*' element={<Error404 />} /> 
